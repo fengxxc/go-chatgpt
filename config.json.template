@@ -1,0 +1,7 @@
+{
+    "authorization": "your chatgpt api key (without 'Bearer ' as prefix)",
+	"model": "gpt-3.5-turbo",
+	"temperature": 0,
+	"max_tokens": 2048,
+	"proxy": "socks5 or http scheme url"
+}
