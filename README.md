@@ -41,3 +41,45 @@ go-chatgpt --authorization <replace your chatgpt api key>
 Then start talking to Chatgpt~
 
 Enter `exit` or end the terminal to exit the session
+
+## As a Package for go
+```
+go get github.com/fengxxc/go-chatgpt
+```
+import it where you need
+```golang
+import "github.com/fengxxc/go-chatgpt/chatgpt"
+```
+this is a complete example
+```golang
+package main
+
+import (
+	"fmt"
+
+	"github.com/fengxxc/go-chatgpt/chatgpt"
+)
+
+func main() {
+	config := &chatgpt.GptConfig{
+		Authorization: "<replace your key>",
+		Proxy:         "socks5://127.0.0.1:4698",
+	}
+	message0 := &chatgpt.GptMessage{
+		Role:    "system",
+		Content: "You are a helpful assistant.",
+	}
+	message1 := &chatgpt.GptMessage{
+		Role:    "user",
+		Content: "What is the World Cup 2022 winner?",
+	}
+	response, err := chatgpt.ChatGpt(config, message0, message1)
+	if err != nil {
+		fmt.Printf("something went wrong: %v", err)
+	}
+	for _, grc := range response.Choices {
+		fmt.Printf("chatgpt: %v\n", grc.Message.Content)
+	}
+	// emm... chatgpt don't know yet ¯\_(ツ)_/¯
+}
+```
