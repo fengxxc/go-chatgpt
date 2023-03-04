@@ -18,7 +18,7 @@ There are two ways to configure parameters
 ### via command parameters
 Prefix with `--` in the startup command, like this
 ```
-go-chatgpt -- authorization <your chatgpt api key> -- model gpt-3.5-turb "Hi~chatgpt~"
+go-chatgpt --authorization <your chatgpt api key> --model gpt-3.5-turb "Hi~chatgpt~"
 ```
 ### via config.json
 Run `cp config.json.template config.json`

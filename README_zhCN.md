@@ -18,7 +18,7 @@ go-chatgpt --authorization <replace your chatgpt api key> "hello"
 ### 通过 命令参数
 在启动命令中以`--`前缀，例如
 ```
-go-chatgpt -- authorization <your chatgpt api key> -- model gpt-3.5-turb "Hi~chatgpt~"
+go-chatgpt --authorization <your chatgpt api key> --model gpt-3.5-turb "Hi~chatgpt~"
 ```
 ### 通过 配置文件config.json
 执行`cp config.json.template config.json`，在`config.json`文件中填写相应的值
