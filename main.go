@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"encoding/json"
 	"fmt"
 	"os"
 	"strconv"
@@ -20,7 +19,7 @@ func main() {
 	// load config
 	var config *chatgpt.GptConfig = &chatgpt.GptConfig{}
 	if fileExists(CONFIG_FILE) {
-		config = loadConfig(CONFIG_FILE)
+		config = chatgpt.LoadConfig(CONFIG_FILE)
 	}
 
 	args := os.Args
@@ -56,8 +55,7 @@ func main() {
 		chatOfSession(config)
 	}
 
-	answer := chat(config, &chatgpt.GptMessage{Role: "user", Content: content})
-	fmt.Printf("%s\n", answer)
+	chat(config, &chatgpt.GptMessage{Role: "user", Content: content})
 }
 
 func chatOfSession(config *chatgpt.GptConfig) {
@@ -76,34 +74,37 @@ func chatOfSession(config *chatgpt.GptConfig) {
 		}
 		gptMessages = append(gptMessages, &chatgpt.GptMessage{Role: "user", Content: q})
 		answer := chat(config, gptMessages...)
-		fmt.Printf("%s\n\n> ", answer)
+		fmt.Printf("\n> ")
 		gptMessages = append(gptMessages, &chatgpt.GptMessage{Role: "assistant", Content: answer})
 	}
 }
 
 func chat(config *chatgpt.GptConfig, gptMessages ...*chatgpt.GptMessage) string {
-	gptRes, err := chatgpt.ChatGpt(config, gptMessages...)
+	var answer string = ""
 
+	// steam style
+	if config.Stream {
+		err := chatgpt.ChatGptStream(config, func(s *chatgpt.GptResponseStream) {
+			fmt.Printf("%s", s.Answer())
+			answer += s.Answer()
+		}, gptMessages...)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Printf("\n")
+		return answer
+	}
+
+	// normal style
+	gptRes, err := chatgpt.ChatGpt(config, gptMessages...)
 	if err != nil {
 		panic(err)
 	}
-	answer := gptRes.Answer()
+	answer = gptRes.Answer()
+	fmt.Printf("%s\n", answer)
 	return answer
 	// fmt.Printf("(prompt_tokens: %d, prompt_tokens: %d, total_tokens: %d)\n",
 	// 	gptRes.Usage.PromptTokens, gptRes.Usage.CompletionTokens, gptRes.Usage.TotalTokens)
-}
-
-func loadConfig(path string) *chatgpt.GptConfig {
-	data, err := os.ReadFile(path)
-	if err != nil {
-		panic(fmt.Errorf("load config file failed: %v", err))
-	}
-	var config *chatgpt.GptConfig = &chatgpt.GptConfig{}
-	err = json.Unmarshal(data, config)
-	if err != nil {
-		panic(fmt.Errorf("decode config file failed: %v", err))
-	}
-	return config
 }
 
 func fileExists(path string) bool {

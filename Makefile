@@ -1,6 +1,6 @@
 BUILD_ENV := CGO_ENABLED=0
 APP=go-chatgpt
-VERSION=v0.1.0
+VERSION=v0.2.0
 
 # linux or mac 环境编译
 # make [cmd]
