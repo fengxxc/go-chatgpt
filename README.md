@@ -44,7 +44,7 @@ Enter `exit` or end the terminal to exit the session
 
 ## As a Package for go
 ```
-go get github.com/fengxxc/go-chatgpt
+go get -u github.com/fengxxc/go-chatgpt
 ```
 import it where you need
 ```golang

@@ -40,7 +40,7 @@ go-chatgpt --authorization <replace your chatgpt api key>
 
 ## 作为Package
 ```
-go get github.com/fengxxc/go-chatgpt
+go get -u github.com/fengxxc/go-chatgpt
 ```
 在你需要的地方import
 ```golang
