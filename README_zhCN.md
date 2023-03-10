@@ -12,6 +12,7 @@ go-chatgpt --authorization <replace your chatgpt api key> "hello"
  - `model` chatgpt模型，默认为“gpt-3.5-turbo”
  - `temperature` 生成文本的多样性， 0~1
  - `max_tokens` 生成文本时最多可以使用的token数
+ - `stream` 布尔值，是否以流的形式返回
  - `proxy` 代理，支持socks5 或 http
  
 参数的配置有以下两种方式

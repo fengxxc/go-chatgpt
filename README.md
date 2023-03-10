@@ -12,6 +12,7 @@ Your chatgpt api key should not have a "Bearer " prefix
  - `model` same as the official chatgpt parameter, default: 'gpt-3.5-turbo'
  - `temperature` same as the official chatgpt parameters
  - `max_tokens` same as the official chatgpt parameters
+ - `stream` boolean, Whether it is returned as a stream
  - `proxy` proxy, supports Socks5 or HTTP
  
 There are two ways to configure parameters
@@ -50,7 +51,8 @@ import it where you need
 ```golang
 import "github.com/fengxxc/go-chatgpt/chatgpt"
 ```
-this is a complete example
+
+this is a complete example:
 ```golang
 package main
 
@@ -81,5 +83,30 @@ func main() {
 		fmt.Printf("chatgpt: %v\n", grc.Message.Content)
 	}
 	// emm... chatgpt don't know yet ¯\_(ツ)_/¯
+}
+```
+
+stream style example:
+```golang
+func main() {
+	config := &chatgpt.GptConfig{
+		Authorization: "<replace your key>",
+		Proxy:         "socks5://127.0.0.1:4698",
+	}
+	message0 := &chatgpt.GptMessage{
+		Role:    "system",
+		Content: "You are a helpful assistant.",
+	}
+	message1 := &chatgpt.GptMessage{
+		Role:    "user",
+		Content: "What is the World Cup 2022 winner?",
+	}
+	fmt.Printf("chatgpt: \n")
+	err := chatgpt.ChatGptStream(config, func(gr *GptResponseStream) {
+		fmt.Printf("%s", gr.Answer())
+	}, message0, message1)
+	if err != nil {
+		fmt.Printf("something went wrong: %v", err)
+	}
 }
 ```
