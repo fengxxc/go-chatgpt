@@ -51,7 +51,8 @@ func main() {
 
 	if content == "" {
 		fmt.Println("Welcome to ChatGpt CLI~ 😘 ")
-		fmt.Print("Start your show~ 😙 (Enter 'exit' to quit.)\n> ")
+		fmt.Println("(Enter 'exit' to quit; Enter 'new' to restart a new Session.)")
+		fmt.Print("> ")
 		chatOfSession(config)
 	}
 
@@ -67,7 +68,12 @@ func chatOfSession(config *chatgpt.GptConfig) {
 		scanner.Scan()
 		q = scanner.Text()
 		q = strings.TrimSpace(q)
-		if q == "exit" {
+		if q == "new" {
+			gptMessages = []*chatgpt.GptMessage{}
+			fmt.Println("-----Restart a new session-----")
+			fmt.Printf("\n> ")
+			continue
+		} else if q == "exit" {
 			fmt.Println("See you next time~ 🤗")
 			os.Exit(0)
 			return
