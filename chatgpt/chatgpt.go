@@ -7,12 +7,24 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"regexp"
 )
 
 const (
-	API_URL   string = "https://api.openai.com/v1/chat/completions"
-	DEF_MODEL string = "gpt-3.5-turbo" // or "text-davinci-003"...
+	DEF_API_HOST string = "api.openai.com"
+	API_URL      string = "https://%s/v1/chat/completions"
+	DEF_MODEL    string = "gpt-3.5-turbo" // or "text-davinci-003"...
 )
+
+func getApiURL(config *GptConfig) string {
+	customerHost := config.Host
+	if customerHost != "" {
+		re := regexp.MustCompile(`^(https?://)`)
+		customerHost = re.ReplaceAllString(customerHost, "")
+		return fmt.Sprintf(API_URL, customerHost)
+	}
+	return fmt.Sprintf(API_URL, DEF_API_HOST)
+}
 
 func ChatGpt(config *GptConfig, gptMessages ...*GptMessage) (GptResponse, error) {
 	req, err := GetRequest(config, gptMessages...)
@@ -68,7 +80,7 @@ func GetRequest(config *GptConfig, gptMessages ...*GptMessage) (*http.Request, e
 		return nil, err
 	}
 	// fmt.Println(string(reqBodyStr))
-	req, err := http.NewRequest("POST", API_URL, bytes.NewReader(reqBodyStr))
+	req, err := http.NewRequest("POST", getApiURL(config), bytes.NewReader(reqBodyStr))
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Authorization", "Bearer "+config.Authorization)
 	if config.Stream {

@@ -41,6 +41,8 @@ func main() {
 			config.MaxTokens, _ = strconv.Atoi(args[i])
 		case "--proxy":
 			config.Proxy = args[i]
+		case "--host":
+			config.Host = args[i]
 		}
 		argKey = ""
 	}

@@ -102,4 +102,6 @@ type GptConfig struct {
 	Stream        bool   `json:"stream"`
 	// 'Proxy' support socks5 and http
 	Proxy string `json:"proxy"`
+	// customer host, default is "api.openai.com"
+	Host string `json:"host"`
 }

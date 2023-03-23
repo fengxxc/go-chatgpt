@@ -4,5 +4,6 @@
 	"temperature": 0,
 	"max_tokens": 2048,
 	"stream": true,
-	"proxy": "socks5 or http scheme url"
+	"proxy": "socks5 or http scheme url",
+	"host": "api.openai.com",
 }
