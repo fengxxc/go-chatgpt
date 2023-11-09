@@ -8,10 +8,10 @@ import (
 	"strings"
 )
 
-func ChatGptStream(config *GptConfig, callback func(*GptResponseStream), gptMessages ...*GptMessage) error {
+func ChatGptStream(config *GptConfig, callback func(*GptResponseStream), gptMessages ...*GptMessage) (int, error) {
 	req, err := GetRequest(config, gptMessages...)
 	if err != nil {
-		return err
+		return -1, err
 	}
 	var httpClient *http.Client = GetHttpClient(req, config.Proxy)
 	resp, err := httpClient.Do(req)
@@ -19,13 +19,13 @@ func ChatGptStream(config *GptConfig, callback func(*GptResponseStream), gptMess
 		defer resp.Body.Close()
 	}
 	if err != nil {
-		return err
+		return -2, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
 		var gptErr *GptError
 		json.NewDecoder(resp.Body).Decode(&gptErr)
-		return fmt.Errorf(gptErr.Error.Message)
+		return resp.StatusCode, fmt.Errorf(gptErr.Error.Message)
 	}
 	for {
 		event, err := readEvent(resp.Body)
@@ -41,11 +41,11 @@ func ChatGptStream(config *GptConfig, callback func(*GptResponseStream), gptMess
 		var gptRes *GptResponseStream
 		err = json.NewDecoder(strings.NewReader(event.Data)).Decode(&gptRes)
 		if err != nil {
-			return err
+			return -3, err
 		}
 		callback(gptRes)
 	}
-	return nil
+	return 0, nil
 }
 
 func readEvent(body io.ReadCloser) (*event, error) {

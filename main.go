@@ -92,12 +92,13 @@ func chat(config *chatgpt.GptConfig, gptMessages ...*chatgpt.GptMessage) string 
 
 	// steam style
 	if config.Stream {
-		err := chatgpt.ChatGptStream(config, func(s *chatgpt.GptResponseStream) {
+		status, err := chatgpt.ChatGptStream(config, func(s *chatgpt.GptResponseStream) {
 			fmt.Printf("%s", s.Answer())
 			answer += s.Answer()
 		}, gptMessages...)
 		if err != nil {
-			panic(err)
+			fmt.Printf("Status: %d, Error: %s\n", status, err.Error())
+			fmt.Printf("Press enter to retry...")
 		}
 		fmt.Printf("\n")
 		return answer
@@ -106,7 +107,8 @@ func chat(config *chatgpt.GptConfig, gptMessages ...*chatgpt.GptMessage) string 
 	// normal style
 	gptRes, err := chatgpt.ChatGpt(config, gptMessages...)
 	if err != nil {
-		panic(err)
+		fmt.Printf("Error: %s\n", err.Error())
+		fmt.Printf("Press enter to retry...")
 	}
 	answer = gptRes.Answer()
 	fmt.Printf("%s\n", answer)

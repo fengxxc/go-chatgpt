@@ -53,6 +53,9 @@ type IGptResponse interface {
 }
 
 func (r *GptResponse) Answer() string {
+	if r == nil {
+		return ""
+	}
 	var arr []string = make([]string, len(r.Choices))
 	for i := 0; i < len(r.Choices); i++ {
 		arr[r.Choices[i].Index] = r.Choices[i].Message.Content

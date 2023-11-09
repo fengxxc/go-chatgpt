@@ -37,11 +37,11 @@ func TestChatgptStream(t *testing.T) {
 		Content: "What is the World Cup 2022 winner?",
 	}
 	fmt.Printf("chatgpt: \n")
-	err := ChatGptStream(config, func(gr *GptResponseStream) {
+	status, err := ChatGptStream(config, func(gr *GptResponseStream) {
 		fmt.Printf("%s", gr.Answer())
 	}, message0, message1)
 	if err != nil {
-		fmt.Printf("something went wrong: %v", err)
+		fmt.Printf("something went wrong. status: %d, err: %v", status, err)
 	}
 	// emm... chatgpt don't know yet ¯\_(ツ)_/¯
 }
