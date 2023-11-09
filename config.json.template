@@ -6,4 +6,5 @@
 	"stream": true,
 	"proxy": "socks5 or http scheme url",
 	"host": "api.openai.com",
+	"color": "green"
 }
