@@ -14,6 +14,7 @@ Your chatgpt api key should not have a "Bearer " prefix
  - `max_tokens` same as the official chatgpt parameters
  - `stream` boolean, Whether it is returned as a stream
  - `proxy` proxy, supports Socks5 or HTTP
+ - `color` Font color for AI replies, (including 'black', 'red', 'green', 'yellow', 'blue', 'fuchsin', 'white')
  
 There are two ways to configure parameters
 ### via command parameters

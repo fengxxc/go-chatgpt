@@ -14,6 +14,7 @@ go-chatgpt --authorization <replace your chatgpt api key> "hello"
  - `max_tokens` 生成文本时最多可以使用的token数
  - `stream` 布尔值，是否以流的形式返回
  - `proxy` 代理，支持socks5 或 http
+ - `color` AI回复的字体颜色（包括'black', 'red', 'green', 'yellow', 'blue', 'fuchsin', 'white')
  
 参数的配置有以下两种方式
 ### 通过 命令参数
